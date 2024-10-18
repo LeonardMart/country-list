@@ -57,7 +57,7 @@ const AssociatedCountry = () => {
                     {item.name.common}
                   </div>
                 </div>
-                <button className="text-gray-600 h-full hover:scale-110 md:hidden lg:hidden w-6">
+                <button onClick={() => navigate(`/country/${item.cca3}`)} className="text-gray-600 h-full hover:scale-110 md:hidden lg:hidden w-6">
                   <ArrowRight
                     width={20}
                     height={20}
