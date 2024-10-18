@@ -11,7 +11,7 @@ const Navbar = ({ children }) => {
         <div className="sticky top-0 w-full bg-gray-700 shadow-lg shadow-gray-700 z-10">
           <div className="flex flex-row items-center justify-between px-4 py-2 w-full">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/country-list")}
               className="flex flex-row items-center space-x-1.5"
             >
               <div className="text-red-500 text-3xl font-bold">Bridge</div>

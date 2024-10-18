@@ -1,4 +1,5 @@
 {
+  "homepage":"https://leonardmart.github.io/country-list",
   "name": "country-list",
   "version": "0.1.0",
   "private": true,
@@ -11,6 +12,7 @@
     "@types/leaflet": "^1.9.12",
     "axios": "^1.7.7",
     "clsx": "^2.1.1",
+    "gh-pages": "^6.2.0",
     "leaflet": "^1.9.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -24,6 +26,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy":"npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
