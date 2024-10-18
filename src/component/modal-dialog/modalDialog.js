@@ -24,7 +24,7 @@ const ModalDialog = ({
         onKeyDown={onCancel}
         tabIndex={0}
       />
-      <div className="modal-dialog w-[300px] z-50 md:w-[400px] left-[calc(50%-140px)] sm:left-[calc(50%-150px)] md:left-[calc(50%-200px)]">
+      <div className="modal-dialog w-[300px] z-50 md:w-[400px] left-[calc(50%-150px)] sm:left-[calc(50%-150px)] md:left-[calc(50%-200px)]">
         <div className="self-center text-center w-fit m-auto py-[25.33px]"></div>
         <div className="space-y-1.5 pb-5">
           <div className="text-[16px] font-bold text-gray-700">{title}</div>
