@@ -2,8 +2,7 @@ import React from "react";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import L from "leaflet";
 
-// Ensure to set up the marker icon properly
-delete L.Icon.Default.prototype._getIconUrl; // Remove default icon URLs
+delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
   iconUrl: require("leaflet/dist/images/marker-icon.png"),
@@ -11,7 +10,7 @@ L.Icon.Default.mergeOptions({
 });
 
 const MapComponent = ({ latlng }) => {
-  const position = [latlng[0], latlng[1]]; // Example Latitude and Longitude for your location
+  const position = [latlng[0], latlng[1]];
 
   return (
     <MapContainer

@@ -22,7 +22,7 @@ const Navbar = ({ children }) => {
               <button
                 onClick={() => navigate("associated-country")}
                 className={`font-semibold hover:text-lg w-[120px] md:w-fit lg:w-fit text-white px-4 py-1 rounded transition duration-300 ${
-                  location.pathname === "/associated-country" ? "font-bold text-orange-600 text-lg" : "font-semibold"
+                  location.pathname === "/associated-country" ? "font-bold text-orange-600" : "font-thin"
                 }`}
               >
                 Associated Country
