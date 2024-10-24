@@ -18,6 +18,7 @@ const CountryListPage = () => {
     setData(countries);
   }, [countries]);
 
+  
   const searchCountries = useCallback(async () => {
     if (searchKeyword) {
       try {
@@ -26,6 +27,7 @@ const CountryListPage = () => {
           method: "get",
         });
         if (res) {
+          
           setData(res);
         } else {
           setData([]);
