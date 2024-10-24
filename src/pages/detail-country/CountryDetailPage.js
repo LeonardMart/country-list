@@ -5,6 +5,7 @@ import MapComponent from "../../component/map/map";
 import ModalDialog from "../../component/modal-dialog/modalDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { setAssociatedCountries } from "../../store/associatedSlice";
+import SearchBox from "../../component/searchbox/SearchBox";
 
 const CountryDetailPage = () => {
   const { id } = useParams()
@@ -72,6 +73,7 @@ const CountryDetailPage = () => {
 
   return (
     <div className="flex flex-col w-full space-y-4 p-4">
+      
       {isModalVisible && (
         <ModalDialog
           type={
@@ -186,12 +188,20 @@ const CountryDetailPage = () => {
             </div>
           </div>
 
-          {!isCountryAssociated && (
+          {!isCountryAssociated ? (
             <div className="flex w-full items-center bg-orange-600 rounded-md">
               <button
                 className="w-full items-center p-4 rounded-md text-white font-bold text-lg"
                 onClick={handleCooperationClick}>
                 Propose Engagement
+              </button>
+            </div>
+          ):(
+            <div className="flex w-full items-center bg-orange-600 rounded-md">
+              <button
+                className="w-full items-center p-4 rounded-md text-white font-bold text-lg"
+                onClick={()=>{}}>
+                Cancel Engagement
               </button>
             </div>
           )}
