@@ -4,21 +4,28 @@ import { useHttpRequest } from "../../hooks/useHttpRequests";
 import MapComponent from "../../component/map/map";
 import ModalDialog from "../../component/modal-dialog/modalDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { setAssociatedCountries } from "../../store/associatedSlice";
+import {
+  removeAssociatedCountry,
+  setAssociatedCountries,
+} from "../../store/associatedSlice";
 import SearchBox from "../../component/searchbox/SearchBox";
 
 const CountryDetailPage = () => {
-  const { id } = useParams()
-  const dispatch = useDispatch()
+  const { id } = useParams();
+  const dispatch = useDispatch();
   const associatedCountries = useSelector(
     (state) => state.associated.associatedCountries
-  )
-  const [countryData, setCountryData] = useState(null)
-  const [isModalVisible, setModalVisible] = useState(false)
-  const [modalType, setModalType] = useState("loading")
-  const [isCountryAssociated, setIsCountryAssociated] = useState(false)
-  const countryDetail = process.env.REACT_APP_COUNTRY_DETAIL_API
-  const { sendRequest } = useHttpRequest(countryDetail)
+  );
+  const [countryData, setCountryData] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [isRemoveModal, setIsRemoveModal] = useState(false);
+  const [modalType, setModalType] = useState("loading");
+  const [isCountryAssociated, setIsCountryAssociated] = useState(false);
+  const countryDetail = process.env.REACT_APP_COUNTRY_DETAIL_API;
+  const { sendRequest } = useHttpRequest(countryDetail);
+  const countries = useSelector(
+    (state) => state.associated.associatedCountries
+  );
 
   const getCountryDetail = useCallback(async () => {
     try {
@@ -27,53 +34,58 @@ const CountryDetailPage = () => {
         method: "get",
       });
       if (res) {
-        setCountryData(res[0])
+        setCountryData(res[0]);
       }
     } catch (error) {
-      console.log("Error fetching country details", error)
+      console.log("Error fetching country details", error);
     }
-  }, [sendRequest, id])
+  }, [sendRequest, id]);
 
   useEffect(() => {
     if (!countryData) {
-      getCountryDetail()
+      getCountryDetail();
     }
-  }, [id, getCountryDetail, countryData])
+  }, [id, getCountryDetail, countryData]);
 
   useEffect(() => {
     if (countryData) {
       const isAssociated = associatedCountries.some(
         (country) => country.cca3 === countryData.cca3
       );
-      setIsCountryAssociated(isAssociated)
+      setIsCountryAssociated(isAssociated);
     }
-  }, [associatedCountries, countryData])
+  }, [associatedCountries, countryData]);
 
   const handleCooperationClick = () => {
-    setModalVisible(true)
-    setModalType("loading")
+    setModalVisible(true);
+    setModalType("loading");
 
-    const randomDelay = Math.floor(Math.random() * 9000) + 2000
+    const randomDelay = Math.floor(Math.random() * 9000) + 2000;
 
     setTimeout(() => {
-      const randomChance = Math.random()
+      const randomChance = Math.random();
       if (randomChance < 0.5) {
-        setModalType("accepted!")
+        setModalType("accepted!");
       } else {
-        setModalType("rejected!")
+        setModalType("rejected!");
       }
-    }, randomDelay)
-  }
+    }, randomDelay);
+  };
 
   useEffect(() => {
     if (modalType === "accepted!") {
-      dispatch(setAssociatedCountries(countryData))
+      dispatch(setAssociatedCountries(countryData));
     }
-  }, [modalType, countryData, dispatch])
+  }, [modalType, countryData, dispatch]);
+
+  const cancelHandler = () => {
+    dispatch(removeAssociatedCountry(countryData));
+    console.log("tes", associatedCountries);
+    setIsRemoveModal(false)
+  };
 
   return (
     <div className="flex flex-col w-full space-y-4 p-4">
-      
       {isModalVisible && (
         <ModalDialog
           type={
@@ -91,8 +103,20 @@ const CountryDetailPage = () => {
           message={modalType === "loading" ? "Please wait..." : modalType}
           yesBtn="Okay"
           onConfirm={() => {
-            setModalVisible(false)
+            setModalVisible(false);
           }}
+        />
+      )}
+
+      {isRemoveModal && (
+        <ModalDialog
+          title={`Remove ${countryData.name.common}?`}
+          message={`Are you sure that you want to delete selected country?`}
+          noBtn="Cancel"
+          yesBtn="Remove"
+          type="warning"
+          onCancel={() => setModalVisible(false)}
+          onConfirm={cancelHandler}
         />
       )}
       {countryData ? (
@@ -196,21 +220,23 @@ const CountryDetailPage = () => {
                 Propose Engagement
               </button>
             </div>
-          ):(
+          ) : (
             <div className="flex w-full items-center bg-orange-600 rounded-md">
               <button
                 className="w-full items-center p-4 rounded-md text-white font-bold text-lg"
-                onClick={()=>{}}>
+                onClick={() => setIsRemoveModal(true)}>
                 Cancel Engagement
               </button>
             </div>
           )}
         </>
       ) : (
-        <div className="bg-gray-100 w-full rounded-md p-4">Retrieving data...</div>
+        <div className="bg-gray-100 w-full rounded-md p-4">
+          Retrieving data...
+        </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default CountryDetailPage;
