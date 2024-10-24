@@ -86,6 +86,9 @@ const CountryDetailPage = () => {
 
   return (
     <div className="flex flex-col w-full space-y-4 p-4">
+      {isCountryAssociated&&(
+        <div className="w-full bg-green-500 rounded-md p-4 items-center font-semibold flex justify-center">Country Associated Already</div>
+      )}
       {isModalVisible && (
         <ModalDialog
           type={
