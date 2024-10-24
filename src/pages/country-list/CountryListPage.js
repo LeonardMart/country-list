@@ -5,17 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const CountryListPage = () => {
-  const countries = useSelector((state) => state.countries.countries)
-  const searchCountry = process.env.REACT_APP_COUNTRY_SEARCH_API
-  const { sendRequest } = useHttpRequest()
-  const [searchKeyword, setSearchKeyword] = useState("")
-  const [data, setData] = useState([])
-  const [message, setMessage] = useState("Retrieving Data...")
-  const navigate = useNavigate()
+  const countries = useSelector((state) => state.countries.countries);
+  const searchCountry = process.env.REACT_APP_COUNTRY_SEARCH_API;
+  const { sendRequest } = useHttpRequest();
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [data, setData] = useState([]);
+  const [message, setMessage] = useState("Retrieving Data...");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setData(countries)
-  }, [countries])
+    setData(countries);
+  }, [countries]);
 
   const searchCountries = useCallback(async () => {
     if (searchKeyword) {
@@ -25,38 +26,35 @@ const CountryListPage = () => {
           method: "get",
         });
         if (res) {
-          setData(res)
+          setData(res);
         } else {
-          setData([])
-          setMessage("No Data Found...")
+          setData([]);
+          setMessage("No Data Found...");
         }
       } catch (error) {
-        setMessage("Error Searching Countries...")
-        console.log("Error fetching data ", error)
+        setMessage("Error Searching Countries...");
+        console.log("Error fetching data ", error);
       }
     } else {
-      setData(countries)
+      setData(countries);
     }
-  }, [searchCountry, searchKeyword, countries, sendRequest])
+  }, [searchCountry, countries, sendRequest]);
 
   useEffect(() => {
-    const debounceFetch = setTimeout(() => {
-      searchCountries()
-    }, 300);
-    return () => clearTimeout(debounceFetch);
-  }, [searchKeyword, countries, searchCountries])
+    searchCountries().catch((e) => console.log("error", e));
+  }, [searchKeyword]);
 
   const searchHandler = (e) => {
-    setSearchKeyword(e.target.value)
-  }
+    setSearchKeyword(e.target.value);
+  };
 
   const onClearHandler = () => {
-    setSearchKeyword("")
-  }
+    setSearchKeyword("");
+  };
 
   const detailCountryNavigate = (id) => {
-    navigate(`/country/${id}`)
-  }
+    navigate(`/country/${id}`);
+  };
 
   return (
     <div className="flex flex-col w-full h-full space-y-1.5">
@@ -76,8 +74,7 @@ const CountryListPage = () => {
             <button
               key={index}
               onClick={() => detailCountryNavigate(item.cca3)}
-              className="rounded-md bg-gray-100 items-center flex flex-col w-full p-4 space-y-1.5 shadow-lg shadow-gray-400 hover:drop-shadow-xl hover:bg-white hover:scale-110 hover:z-20"
-            >
+              className="rounded-md bg-gray-100 items-center flex flex-col w-full p-4 space-y-1.5 shadow-lg shadow-gray-400 hover:drop-shadow-xl hover:bg-white hover:scale-110 hover:z-20">
               <div className="rounded-md item-center">
                 <img
                   className="w-30 h-auto rounded-md shadow-xl shadow-gray-400 sm:w-30 sm:h-25 md:w-30 md:h-20 xl:w-50 xl:h-24"
@@ -95,7 +92,7 @@ const CountryListPage = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default CountryListPage;
